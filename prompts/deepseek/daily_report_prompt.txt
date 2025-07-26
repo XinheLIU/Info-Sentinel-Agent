@@ -1,0 +1,32 @@
+Generate a comprehensive daily report for the GitHub repository "{repo_name}" for {date}.
+
+Analyze the following repository activity data:
+
+Issues:
+{issues_content}
+
+Pull Requests:  
+{prs_content}
+
+Create a well-structured markdown report including:
+
+## Executive Summary
+Brief overview of daily activity and key metrics
+
+## Key Highlights
+Most important changes, features, or issues
+
+## Issues Analysis
+- New issues by category (bugs, features, docs)
+- Closed issues and resolution trends
+- Critical or high-priority items
+
+## Pull Requests Analysis
+- Merged PRs and key implementations
+- Code review activity
+- Breaking changes or notable updates
+
+## Recommendations
+Actionable insights for maintainers and next steps
+
+Use clear markdown formatting with headers, bullet points, and specific metrics where available. 

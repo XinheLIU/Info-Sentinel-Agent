@@ -1,0 +1,15 @@
+Analyze the following GitHub repository activity and provide a structured summary:
+
+Issues:
+{issues_content}
+
+Pull Requests:
+{prs_content}
+
+Provide a clear summary covering:
+- Activity overview (total numbers and main themes)
+- Key changes and important updates  
+- Development trends and project health
+- Main takeaways and actionable insights
+
+Focus on the most significant changes and patterns. Keep it informative but concise. 

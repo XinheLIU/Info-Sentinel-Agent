@@ -1,0 +1,16 @@
+Create a professional daily report for "{repo_name}" on {date}.
+
+Issues:
+{issues_content}
+
+Pull Requests:
+{prs_content}
+
+Include:
+1. Executive Summary
+2. Key Highlights  
+3. Issues Analysis
+4. Pull Requests Analysis
+5. Recommendations
+
+Use markdown formatting with clear sections and actionable insights. 

@@ -1,0 +1,9 @@
+Please provide a concise summary of the following GitHub activity:
+
+Issues:
+{issues_content}
+
+Pull Requests:
+{prs_content}
+
+Focus on the main themes, important changes, and overall activity level. Keep the summary clear and actionable. 

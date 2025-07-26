@@ -1,0 +1,9 @@
+Summarize this GitHub repository activity:
+
+Issues:
+Sample test content
+
+Pull Requests:
+Sample test content
+
+Focus on key themes, important changes, and overall activity trends. Be concise and actionable. 

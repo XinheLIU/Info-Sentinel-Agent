@@ -1,0 +1,9 @@
+requests
+python-dotenv
+openai
+python-dateutil
+loguru
+gradio
+python-daemon
+markdown2
+schedule

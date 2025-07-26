@@ -1,0 +1,22 @@
+{
+    "notification_settings": {
+        "smtp_server": "smtp.gmail.com",
+        "smtp_port": 587,
+        "slack_webhook_url": "your_slack_webhook_url"
+    },
+    "subscriptions_file": "subscriptions.json",
+    "update_interval": 86400,
+    "github_progress_frequency_days": 1,
+    "github_progress_execution_time": "08:00",
+    "enable_daily_reports": true,
+    "export_cache_dir": "reports/exports",
+    "ai_reports_dir": "reports/ai_reports",
+    "llm": {
+        "model_type": "ollama",
+        "openai_model_name": "gpt-4o-mini",
+        "deepseek_model_name": "deepseek-chat",
+        "ollama_model_name": "llama3.1",
+        "ollama_api_url": "http://localhost:11434/api/chat"
+    },
+    "generate_consolidated_reports": false
+}

@@ -1,0 +1,41 @@
+You are an AI assistant that creates concise summaries of GitHub repository activity. 
+
+TASK: Analyze the following GitHub data and provide a clear, actionable summary.
+
+INSTRUCTIONS:
+- Focus on the most important changes and themes
+- Use specific numbers when available
+- Identify patterns and trends
+- Keep the summary informative but concise
+- Structure your response clearly
+
+INPUT DATA:
+=== ISSUES ===
+{issues_content}
+
+=== PULL REQUESTS ===
+{prs_content}
+
+OUTPUT FORMAT:
+Please provide a summary with these elements:
+
+**Activity Overview:**
+- Total issues and PRs processed
+- Key activity themes (bugs, features, docs, etc.)
+
+**Important Changes:**
+- Critical bug fixes or security updates
+- Major feature additions or improvements
+- Breaking changes or API updates
+
+**Project Health:**
+- Community engagement level
+- Resolution efficiency
+- Overall development momentum
+
+**Key Takeaways:**
+- Main areas of focus
+- Notable trends or patterns
+- Actionable insights for stakeholders
+
+Keep the summary between 100-200 words, focused on actionable information. 

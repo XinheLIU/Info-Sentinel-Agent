@@ -1,0 +1,18 @@
+Create a professional daily report for the GitHub repository "{repo_name}" for {date}.
+
+Based on the following data:
+
+Issues:
+{issues_content}
+
+Pull Requests:
+{prs_content}
+
+Please create a comprehensive daily report that includes:
+1. Executive Summary
+2. Key Highlights
+3. Issues Analysis
+4. Pull Requests Analysis
+5. Recommendations or Next Steps
+
+Format the output as a well-structured markdown document with clear sections and professional formatting. 
