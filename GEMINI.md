@@ -4,10 +4,11 @@
 
 Analyze the codebase, especially under `/src`, and document the main architecture, workflow, classes, and their relationships in this file.
 
-[ ] Task 1: Analyze the codebase
-[ ] Task 2: Document the architecture
-[ ] Task 3: Document the workflow
-[ ] Task 4: Document the main classes and their relationships
+[x] Task 1: Analyze the codebase
+[x] Task 2: Document the architecture
+[x] Task 3: Document the workflow
+[x] Task 4: Document the main classes and their relationships
+[x] Task 5: Integrate Hacker News
 
 ---
 
@@ -22,6 +23,7 @@ The application follows a modular architecture with clear separation of concerns
 -   **Configuration (`config.py`):** A centralized `Config` class loads settings from `config.json` and environment variables (`.env`). It manages configurations for GitHub API, LLM providers (OpenAI, DeepSeek, Ollama), and notifications.
 -   **Core Logic:**
     -   `github_client.py`: Handles all interactions with the GitHub API. The `GitHubClient` class is responsible for fetching data like commits, issues, and pull requests.
+    -   `hacker_news_client.py`: Fetches top stories from Hacker News.
     -   `llm_client.py`: Provides an interface to Large Language Models. The `LLM` (aliased as `LLMClient`) class supports different providers and is used for generating summaries and reports.
     -   `report_generator.py`: The `ReportGenerator` class orchestrates the creation of reports. It uses `github_client` to get data, caches it, and then uses `llm_client` to generate AI-powered analysis.
 -   **User Interfaces:** The application supports multiple modes of operation:
@@ -29,7 +31,7 @@ The application follows a modular architecture with clear separation of concerns
     -   `daemon_process.py`: A background process that runs scheduled tasks, like daily report generation.
     -   `gradio_server.py`: A web-based UI built with Gradio for a more user-friendly experience.
 -   **Supporting Modules:**
-    -   `subscription_manager.py`: Manages the list of subscribed repositories.
+    -   `subscription_manager.py`: Manages the list of subscribed repositories and other sources like Hacker News.
     -   `prompt_manager.py`: Manages and loads prompts for the LLM, with support for provider-specific templates.
     -   `notifier.py`: Handles sending notifications, primarily via email.
     -   `logger.py`: Configures logging for the application using `loguru`.
@@ -37,10 +39,12 @@ The application follows a modular architecture with clear separation of concerns
 
 ### Main Workflow
 
-The primary workflow of GitHubSentinel revolves around fetching data from GitHub, processing it, and generating reports.
+The primary workflow of GitHubSentinel revolves around fetching data from GitHub and other sources, processing it, and generating reports.
 
-1.  **Subscription:** The user subscribes to one or more GitHub repositories using the `add` command (or through configuration).
-2.  **Data Fetching:** The `GitHubClient` fetches updates (commits, issues, PRs) for the subscribed repositories for a specified time range.
+1.  **Subscription:** The user subscribes to one or more GitHub repositories or "hackernews" using the `add` command (or through configuration).
+2.  **Data Fetching:** 
+    - For GitHub repositories, the `GitHubClient` fetches updates (commits, issues, PRs) for the subscribed repositories for a specified time range.
+    - For Hacker News, the `HackerNewsClient` fetches the current top stories.
 3.  **Progress Exporting:** The fetched data is first exported into a structured markdown file and stored in a cache directory (`reports/exports`). This is handled by the `ReportGenerator`. This cached file serves as the raw data for AI analysis.
 4.  **Report Generation:**
     -   The `ReportGenerator` reads the cached markdown file.
@@ -59,7 +63,9 @@ This workflow can be triggered manually via the CLI or automatically by the daem
 
 -   **`GitHubClient`**: Used by `CommandHandler`, `ReportGenerator`, and the daemon process to fetch data from GitHub. It requires the GitHub token from the `Config` object.
 
--   **`SubscriptionManager`**: Manages the `subscriptions.json` file. It's used by `CommandHandler` and the daemon to get the list of repositories to process.
+-   **`HackerNewsClient`**: Used by `ReportGenerator` to fetch top stories from Hacker News.
+
+-   **`SubscriptionManager`**: Manages the `subscriptions.json` file. It's used by `CommandHandler` and the daemon to get the list of repositories and other sources to process.
 
 -   **`LLMClient` (`LLM`)**: The core of the AI functionality. It's instantiated by `ReportGenerator` and `GitHubSentinelCLI`. It uses the `Config` object to determine the provider and API keys. It also uses `PromptManager` to get the correct prompts.
 
@@ -67,13 +73,13 @@ This workflow can be triggered manually via the CLI or automatically by the daem
 
 -   **`ReportGenerator`**: A central class that ties together data fetching and AI analysis.
     -   It's used by `CommandHandler` and the daemon.
-    -   It uses `GitHubClient` to fetch data if a cached file doesn't exist.
+    -   It uses `GitHubClient` or `HackerNewsClient` to fetch data if a cached file doesn't exist.
     -   It uses `LLMClient` to generate the final AI report from the cached data.
 
 -   **`CommandHandler`**: The brain of the CLI.
     -   It uses `SubscriptionManager` to manage subscriptions.
     -   It uses `ReportGenerator` to create reports.
-    -   It uses `GitHubClient` indirectly through `ReportGenerator`.
+    -   It uses `GitHubClient` and `HackerNewsClient` indirectly through `ReportGenerator`.
     -   It can use `Notifier` to send emails.
 
 -   **`Notifier`**: Used by `CommandHandler` and the daemon to send notifications. It gets its settings from the `Config` object.

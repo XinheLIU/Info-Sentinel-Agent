@@ -128,12 +128,14 @@ class CommandHandler:
         exported_count = 0
         for repo in repos_to_process:
             try:
-                updates = self.github_client.fetch_updates(repo, since_date=start_date, until_date=end_date)
-                
-                if days_back == 1:
-                    filepath = self.report_generator.export_daily_progress(repo, updates)
+                if repo.lower() == "hackernews":
+                    filepath = self.report_generator.export_hackernews_report()
                 else:
-                    filepath = self.report_generator.export_progress_by_date_range(repo, updates, days_back)
+                    updates = self.github_client.fetch_updates(repo, since_date=start_date, until_date=end_date)
+                    if days_back == 1:
+                        filepath = self.report_generator.export_daily_progress(repo, updates)
+                    else:
+                        filepath = self.report_generator.export_progress_by_date_range(repo, updates, days_back)
                 
                 print(f"- {repo}: {filepath}")
                 exported_count += 1
@@ -225,8 +227,8 @@ class CommandHandler:
 GitHub Sentinel Command Line Interface (v0.7)
 
 Available commands:
-  add <repo>                Add a subscription (e.g., owner/repo)
-  remove <repo>             Remove a subscription (e.g., owner/repo)
+  add <repo|hackernews>     Add a subscription (e.g., owner/repo or hackernews)
+  remove <repo|hackernews>  Remove a subscription
   list                      List all subscriptions
   
   export-progress [--repo <repo>] [--date YYYY-MM-DD] [--days N]

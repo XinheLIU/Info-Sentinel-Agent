@@ -17,6 +17,10 @@ class SubscriptionManager:
         return self.subscriptions
     
     def add_subscription(self, repo):
+        # Ensure "hackernews" is stored in a consistent format
+        if repo.lower() == "hackernews":
+            repo = "hackernews"
+
         if repo not in self.subscriptions:
             self.subscriptions.append(repo)
             self.save_subscriptions()

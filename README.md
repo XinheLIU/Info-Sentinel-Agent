@@ -1,14 +1,19 @@
-# GitHub Sentinel v0.6
+# Info Sentinel Agent v0.6
 
-GitHub Sentinel is an intelligent AI-powered tool designed for developers and project managers. 
+Info Sentinel Agent is an intelligent AI-powered information monitoring and analysis tool designed for developers, project managers, and information seekers.
 
-It automatically monitors GitHub repositories, tracks daily activity, and generates comprehensive reports using advanced AI analysis.
+*This is an independent project inspired and extended based on [@DjangoPeng/GitHubSentinel](https://github.com/DjangoPeng/GitHubSentinel). It goes beyond GitHub monitoring to include comprehensive information gathering from multiple sources including HackerNews, Personal RSS Feeds, and more.*
+
+Info Sentinel Agent automatically monitors various information sources, tracks daily activity, and generates comprehensive reports using advanced AI analysis.
 
 ## Core Features
 
-- Automated monitoring and tracking of GitHub repository activity
-- AI-generated daily summaries and analytical reports
-- Scheduled email delivery of reports to user-defined recipients
+- **Multi-Source Monitoring**: GitHub repositories, HackerNews, RSS feeds, and more information sources
+- **GitHub Repository Tracking**: Automated monitoring of repository activity and changes
+- **News & Trend Analysis**: HackerNews trending topics and technology discussions
+- **RSS Feed Integration**: Monitor personal RSS feeds and blogs
+- AI-generated daily summaries and analytical reports across all sources
+- Scheduled email delivery of comprehensive reports to user-defined recipients
 
 ## 📋 Prerequisites
 

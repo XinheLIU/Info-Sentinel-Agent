@@ -7,3 +7,4 @@ gradio
 python-daemon
 markdown2
 schedule
+beautifulsoup4

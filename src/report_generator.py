@@ -3,6 +3,7 @@ from datetime import date, timedelta, datetime
 from typing import Optional
 from llm_client import LLMClient
 from logger import LOG
+from hacker_news_client import HackerNewsClient
 
 
 class ReportGenerator:
@@ -19,6 +20,28 @@ class ReportGenerator:
         # Create directories if they don't exist
         os.makedirs(self.export_cache_dir, exist_ok=True)
         os.makedirs(self.ai_reports_dir, exist_ok=True)
+
+    def export_hackernews_report(self) -> str:
+        """Fetches top stories from Hacker News and exports them to a markdown file."""
+        hackernews_client = HackerNewsClient()
+        stories = hackernews_client.fetch_top_stories()
+
+        if not stories:
+            LOG.info("No Hacker News stories found.")
+            return ""
+
+        repo_dir = os.path.join(self.export_cache_dir, "hackernews")
+        os.makedirs(repo_dir, exist_ok=True)
+
+        file_path = os.path.join(repo_dir, f"{date.today()}.md")
+
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(f"# Hacker News Top Stories ({date.today()})\n\n")
+            for story in stories:
+                file.write(f"- [{story['title']}]({story['link']})\n")
+
+        LOG.info(f"Exported Hacker News top stories to {file_path}")
+        return file_path
     
     def _has_meaningful_updates(self, updates: dict) -> bool:
         """
@@ -362,6 +385,12 @@ Consider checking back when there is more activity to analyze, or extend the tim
         Returns:
             Tuple of (report_content, report_file_path)
         """
+        if repo.lower() == "hackernews":
+            cache_path = self.export_hackernews_report()
+            if not cache_path:
+                return "Could not generate Hacker News report.", ""
+            return self.generate_daily_report(cache_path)
+
         if target_date is None:
             target_date = date.today().strftime('%Y-%m-%d')
         
@@ -404,53 +433,53 @@ Consider checking back when there is more activity to analyze, or extend the tim
 
     def generate_notification_report(self, repo: str, updates: dict) -> str:
         """Generate a notification report for a single repository from updates data"""
-        report = f"# GitHub Sentinel Update Report\n\n"
-        report += f"**Repository:** {repo}  \n"
-        report += f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  \n\n"
+        report = f"""# GitHub Sentinel Update Report\n\n"""
+        report += f"""**Repository:** {repo}  \n"""
+        report += f"""**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  \n\n"""
         
         summary = updates.get('summary', {})
-        report += f"## 📊 Summary\n\n"
-        report += f"- **Commits:** {summary.get('commits', 0)}\n"
-        report += f"- **Issues:** {summary.get('issues', 0)}\n"
-        report += f"- **Pull Requests:** {summary.get('pull_requests', 0)}\n"
+        report += f"""## 📊 Summary\n\n"""
+        report += f"""- **Commits:** {summary.get('commits', 0)}\n"""
+        report += f"""- **Issues:** {summary.get('issues', 0)}\n"""
+        report += f"""- **Pull Requests:** {summary.get('pull_requests', 0)}\n"""
         
         # Add details for commits
         commits = updates.get('commits', [])
         if commits:
-            report += f"## 💻 Recent Commits ({len(commits)})\n\n"
+            report += f"""## 💻 Recent Commits ({len(commits)})\n\n"""
             for commit in commits[:5]:  # Show first 5 commits
                 sha = commit.get('sha', '')[:8]
                 message = commit.get('commit', {}).get('message', '').split('\n')[0]  # First line only
                 author = commit.get('commit', {}).get('author', {}).get('name', 'Unknown')
-                report += f"- **{sha}** by {author}: {message}\n"
+                report += f"""- **{sha}** by {author}: {message}\n"""
             if len(commits) > 5:
-                report += f"\n*... and {len(commits) - 5} more commits*\n"
-            report += "\n"
+                report += f"""\n*... and {len(commits) - 5} more commits*\n"""
+            report += """\n"""
         
         # Add details for issues
         issues = updates.get('issues', [])
         if issues:
-            report += f"## 🐛 Recent Issues ({len(issues)})\n\n"
+            report += f"""## 🐛 Recent Issues ({len(issues)})\n\n"""
             for issue in issues[:5]:  # Show first 5 issues
                 number = issue.get('number', 'N/A')
                 title = issue.get('title', 'No title')
                 state = issue.get('state', 'unknown')
-                report += f"- **#{number}** [{state.upper()}]: {title}\n"
+                report += f"""- **#{number}** [{state.upper()}]: {title}\n"""
             if len(issues) > 5:
-                report += f"\n*... and {len(issues) - 5} more issues*\n"
-            report += "\n"
+                report += f"""\n*... and {len(issues) - 5} more issues*\n"""
+            report += """\n"""
         
         # Add details for PRs
         prs = updates.get('pull_requests', [])
         if prs:
-            report += f"## 🔄 Recent Pull Requests ({len(prs)})\n\n"
+            report += f"""## 🔄 Recent Pull Requests ({len(prs)})\n\n"""
             for pr in prs[:5]:  # Show first 5 PRs
                 number = pr.get('number', 'N/A')
                 title = pr.get('title', 'No title')
                 state = pr.get('state', 'unknown')
-                report += f"- **#{number}** [{state.upper()}]: {title}\n"
+                report += f"""- **#{number}** [{state.upper()}]: {title}\n"""
             if len(prs) > 5:
-                report += f"\n*... and {len(prs) - 5} more pull requests*\n"
-            report += "\n"
+                report += f"""\n*... and {len(prs) - 5} more pull requests*\n"""
+            report += """\n"""
         
         return report

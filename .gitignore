@@ -166,7 +166,7 @@ cython_debug/
 #.idea/
 
 # Cursor IDE personal rules
-.cursorrules
-subscriptions.json
-GEMINI.md
-Claude.md
+#.cursorrules
+#subscriptions.json
+#GEMINI.md
+#Claude.md
